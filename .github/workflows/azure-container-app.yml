@@ -15,11 +15,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Checkout GitHub repository
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2. Login to Azure using OIDC
       - name: Login to Azure
         uses: azure/login@v3
         with:
@@ -27,22 +25,18 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      # 3. Check Azure login
       - name: Check Azure Account
         run: |
           az account show
 
-      # 4. Build and deploy to Azure Container App
       - name: Build and Deploy Container App
-        uses: azure/container-apps-deploy-action@v2
+        uses: azure/container-apps-deploy-action@v1
         with:
           appSourcePath: ${{ github.workspace }}
-          resourceGroup: YOUR_RESOURCE_GROUP_NAME
-          containerAppName: YOUR_CONTAINER_APP_NAME
-          acrName: YOUR_ACR_NAME
-          imageToBuild: YOUR_ACR_NAME.azurecr.io/clouddeployment:${{ github.sha }}
+          acrName: poojacontainer2026acr
+          containerAppName: pooja-web-app
+          resourceGroup: rg-container-demo
 
-      # 5. Azure logout
       - name: Azure Logout
         run: |
           az logout
